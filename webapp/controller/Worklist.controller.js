@@ -105,15 +105,6 @@ sap.ui.define([
 		        var header = this.$().find('thead');
 		        var selectAllCb = header.find('.sapMCb');
 		        selectAllCb.remove();
-		        
-		    		this.getItems().forEach(function(r) {
-		          var obj = r.getBindingContext().getObject();
-		          var enabled = parseInt(obj.Weight, 10) > 40;
-		          var cb = r.$().find('.sapMCb');
-		          var oCb = sap.ui.getCore().byId(cb.attr('id'));
-		          oCb.setEnabled(enabled);
-		        });  
-
 		      }
 		    }, tbl);
         
@@ -301,9 +292,9 @@ sap.ui.define([
 				var aItems = oTable.getItems();
 		
 				for (var i = 0; i < aItems.length; i++) {
-						if(aItems[i].getBindingContext().getObject().Status !== ''){
-							aItems[i].getMultiSelectControl(/* bCreateIfNotExist = */ true).setEnabled(false);
-						}
+					// a row is selectable only while its status is empty ("to be authorized")
+					var bEditable = aItems[i].getBindingContext().getObject().Status === '';
+					aItems[i].getMultiSelectControl(/* bCreateIfNotExist = */ true).setEnabled(bEditable);
 				}
 			},
 		
