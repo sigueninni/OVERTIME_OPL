@@ -1,0 +1,155 @@
+<mvc:View
+	controllerName="zovertime_process.SanofiOvertmeProcess.controller.Worklist"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.f.semantic">
+
+
+	<semantic:SemanticPage
+		id="page"
+		headerPinnable="false"
+		toggleHeaderOnTitleClick="false"
+		showFooter="true">
+
+		<semantic:titleHeading>
+			<Title text="{i18n>worklistTitle}" visible="false" />
+		</semantic:titleHeading>
+		
+			<semantic:headerContent>
+				<IconTabBar
+					id="iconTabBar"
+					select=".onQuickFilter"
+					expandable="false"
+					class="sapUiResponsiveContentPadding">
+					<items>
+						<IconTabFilter
+							key="all"
+							showAll="true"
+							count="{worklistView>/Totale}"
+							text="{i18n>Totale}"/>
+						<IconTabSeparator/>
+						<IconTabFilter
+							key="DaAutorizzare"
+							icon="sap-icon://employee"
+							iconColor="Default"
+							count="{worklistView>/DaAutorizzare}"
+							text="{i18n>DaAutorizzare}"/>
+						<IconTabFilter
+							key="Richiesto"
+							icon="sap-icon://employee"
+							iconColor="Critical"
+							count="{worklistView>/Richiesto}"
+							text="{i18n>Richiesto}"/>
+						<IconTabFilter
+							key="Approvato"
+							icon="sap-icon://employee-approvals"
+							iconColor="Positive"
+							count="{worklistView>/Approvato}"
+							text="{i18n>Approvato}"/>
+						<IconTabFilter
+							key="Rifiutato"
+							icon="sap-icon://employee-rejections"
+							iconColor="Negative"
+							count="{worklistView>/Rifiutato}"
+							text="{i18n>Rifiutato}"/>
+					</items>
+	
+			<content>
+				<Table
+					id="table"
+					width="auto"
+					mode="MultiSelect"
+					items="{
+						path: '/overtimeSet'
+					}"
+					noDataText="{worklistView>/tableNoDataText}"
+					busyIndicatorDelay="{worklistView>/tableBusyDelay}"
+					growing="true"
+					growingScrollToLoad="true"
+					updateFinished="onUpdateFinished"
+					alternateRowColors="true">
+	
+					<headerToolbar>
+						<Toolbar>
+							<Title id="tableHeader" text="{worklistView>/worklistTableTitle}"/>
+							<ToolbarSpacer />
+							<SearchField
+								id="searchField"
+								tooltip="{i18n>worklistSearchTooltip}"
+								search="onSearch"
+								width="auto"
+								visible="false">
+							</SearchField>
+							<ToolbarSpacer />
+							<Label 
+            					text="{i18n>visualizzaDa}:" 
+            					labelFor="DP10" />
+					<DatePicker
+						id="DP10"
+						value="{
+							'path': '/dateValue',
+							'model':'DataModel',
+							'type': 'sap.ui.model.type.Date',
+							'formatOptions': {
+								pattern: 'dd.MM.yyyy'
+							}
+						}"
+						change="handleChange"
+						width="auto"
+						visible="true"/>
+						
+						</Toolbar>
+					</headerToolbar>
+	
+					<columns>
+						<Column id="nameColumn" visible="false" >
+							<Text text="{i18n>tableNameColumnTitle}" id="nameColumnTitle"/>
+						</Column>
+						<Column id="BegdaNameColumn" hAlign="Center">
+							<Text text="{i18n>DataInizio}"/>
+						</Column>
+						<Column id="BeguzNameColumn" hAlign="Center">
+							<Text text="{i18n>OraInizio}"/>
+						</Column>
+						<Column id="EnduzNameColumn" hAlign="Center">
+							<Text text="{i18n>OraFine}"/>
+						</Column>
+						<Column id="AwartNameColumn" hAlign="Center">
+							<Text text="{i18n>Giustificativo}"/>
+						</Column>
+						<Column id="AtextNameColumn" hAlign="Center">
+							<Text text="{i18n>GiustificativoText}"/>
+						</Column>
+						<Column id="StextNameColumn" hAlign="Center">
+							<Text text="{i18n>Stato}"/>
+						</Column>
+					</columns>
+	
+					<items>
+						<ColumnListItem vAlign="Middle">
+							<cells>
+								<ObjectIdentifier title="{ItemId}"/>
+								<Text text="{path:'Begda',type: 'sap.ui.model.type.Date'}"/>
+								<Text text="{path:'Beguz', formatter: '.formatter.formatTime2' }"/>
+								<Text text="{path:'Enduz', formatter: '.formatter.formatTime2' }"/>
+								<Text text="{Awart}"/>
+								<Text text="{Atext}"/>
+								<ObjectStatus text="{Stext}" state="{ path:'Status', formatter: '.formatter.formatStato' }"/>
+								
+								
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</content>
+		</IconTabBar>
+	</semantic:headerContent>
+
+		<semantic:positiveAction>
+			<semantic:PositiveAction text="{i18n>Richiedi Autorizzazione}" press=".onRequest"/>
+		</semantic:positiveAction>
+
+
+	</semantic:SemanticPage>
+
+</mvc:View>

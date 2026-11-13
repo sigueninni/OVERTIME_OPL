@@ -1,0 +1,32 @@
+specVersion: "4.0"
+metadata:
+  name: zovertime_process.sanofiovertmeprocess
+type: application
+server:
+  customMiddleware:
+    - name: fiori-tools-proxy
+      afterMiddleware: compression
+      configuration:
+        ignoreCertErrors: true
+        backend:
+          - path: /sap
+            url: https://vhng1ed5ci.pce.eu11.euhreka.com:44300/
+            client: "386"
+            destination: ED5
+        ui5:
+          path:
+            - /resources
+            - /test-resources
+          url: https://ui5.sap.com
+          version: 1.120.20
+    - name: fiori-tools-appreload
+      afterMiddleware: compression
+      configuration:
+        port: 35729
+        path: webapp
+        delay: 300
+    - name: fiori-tools-preview
+      afterMiddleware: fiori-tools-appreload
+      configuration:
+        component: zovertime_process.SanofiOvertmeProcess
+        ui5Theme: sap_fiori_3
